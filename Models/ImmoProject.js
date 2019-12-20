@@ -11,7 +11,8 @@ const ImmoProject = mongoose.model("ImmoProject", {
     works: Number,
     notarial: Number,
     total: Number
-  }
+  },
+  email: String
 });
 
 module.exports = ImmoProject;

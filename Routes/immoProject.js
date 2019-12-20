@@ -2,6 +2,12 @@
 
 const express = require("express");
 const router = express.Router();
+const mailgun = require("mailgun-js");
+
+const API_KEY = process.env.MAILGUN_API_KEY;
+const DOMAIN = process.env.MAILGUN_DOMAIN;
+
+const mg = mailgun({ apiKey: API_KEY, domain: DOMAIN });
 
 // Model import
 
@@ -16,11 +22,35 @@ router.post("/immoProject/new", async (req, res) => {
       stateOfProperty: req.fields.stateOfProperty,
       useOfProperty: req.fields.useOfProperty,
       userSituation: req.fields.userSituation,
-      locationOfProperty: req.fields.location,
-      amount: req.fields.amount
+      locationOfProperty: req.fields.locationOfProperty,
+      amount: req.fields.amount,
+      email: req.fields.email
     });
     await newProject.save();
     res.json(newProject);
+    mg.messages().send(
+      {
+        from: "Mailgun Sandbox <postmaster@" + DOMAIN + ">",
+        to: newProject.email,
+        subject: "Meilleur Taux: accusé réception de votre formulaire",
+        text:
+          "Bonjour," +
+          "\n" +
+          "\n" +
+          "Nous accusons réception de votre demande de projet immobilier !" +
+          "\n" +
+          "Nous vous rappelons la référence de votre dossier: " +
+          newProject._id +
+          "\n" +
+          "\n" +
+          "À bientôt" +
+          "\n" +
+          "L'équipe MeilleurTaux (from @LeReacteur)"
+      },
+      (error, body) => {
+        console.log(body);
+      }
+    );
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
