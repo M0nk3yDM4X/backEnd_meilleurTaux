@@ -36,12 +36,10 @@ router.post("/immoProject/new", async (req, res) => {
         text:
           "Bonjour," +
           "\n" +
-          "\n" +
           "Nous accusons réception de votre demande de projet immobilier !" +
           "\n" +
-          "Nous vous rappelons la référence de votre dossier: " +
-          newProject._id +
-          "\n" +
+          "Nous vous rappelons votre dossier: " +
+          newProject +
           "\n" +
           "À bientôt" +
           "\n" +
