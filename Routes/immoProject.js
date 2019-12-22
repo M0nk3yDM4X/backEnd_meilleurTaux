@@ -4,6 +4,8 @@ const express = require("express");
 const router = express.Router();
 const mailgun = require("mailgun-js");
 
+// Mailgun process
+
 const API_KEY = process.env.MAILGUN_API_KEY;
 const DOMAIN = process.env.MAILGUN_DOMAIN;
 
@@ -17,6 +19,9 @@ const ImmoProject = require("../Models/ImmoProject");
 
 router.post("/immoProject/new", async (req, res) => {
   try {
+    // We declare const newProject to be a creation based on our model ImmoProject
+    // Each keys referenced will be the value received from the front-office, so user's choices
+
     const newProject = new ImmoProject({
       typeOfProperty: req.fields.typeOfProperty,
       stateOfProperty: req.fields.stateOfProperty,
@@ -26,8 +31,14 @@ router.post("/immoProject/new", async (req, res) => {
       amount: req.fields.amount,
       email: req.fields.email
     });
+
+    // Saving in our dataBase
     await newProject.save();
+
+    // Sending response to our front-office with all elements about the user demand
     res.json(newProject);
+
+    // Sending an e-mail to the user email with every elements of his demand
     mg.messages().send(
       {
         from: "Mailgun Sandbox <postmaster@" + DOMAIN + ">",
@@ -90,6 +101,8 @@ router.post("/immoProject/new", async (req, res) => {
 
 // ***** 1- READ-ALL-IMMO-PROJECTS ***** //
 
+// This route will be used in order to show all demands which are in dataBase
+
 router.get("/immoProject/readAll", async (req, res) => {
   try {
     const readImmoProjects = await ImmoProject.find();
@@ -100,6 +113,10 @@ router.get("/immoProject/readAll", async (req, res) => {
 });
 
 // ***** 2- READ-ONE-IMMO-PROJECT ***** //
+
+// This route will be used in order to show only one demand which are in dataBase
+// We take the id put in the URL address and search by Id in our dataBase
+// When Id is found --> Sending the demand from our dataBase to our front-office
 
 router.get("/immoProject/readOne/:id", async (req, res) => {
   try {
@@ -120,6 +137,10 @@ router.get("/immoProject/readOne/:id", async (req, res) => {
 // ---|| ROUTE UPDATE ||--- //
 
 // ---|| ROUTE DELETE ||--- //
+
+// This route will be used in order to delete only one demand which are in dataBase
+// We take the id put in the URL address and search by Id in our dataBase
+// When Id is found --> Remove from our dataBase
 
 router.post("/immoProject/deleteOne/:id", async (req, res) => {
   try {
