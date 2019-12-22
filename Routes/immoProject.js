@@ -39,7 +39,39 @@ router.post("/immoProject/new", async (req, res) => {
           "Nous accusons réception de votre demande de projet immobilier !" +
           "\n" +
           "Nous vous rappelons votre dossier: " +
-          newProject +
+          "réf: " +
+          newProject._id +
+          "\n" +
+          "Type de bien: " +
+          newProject.typeOfProperty +
+          "\n" +
+          "Etat du bien: " +
+          newProject.stateOfProperty +
+          "\n" +
+          "Usage du bien: " +
+          newProject.useOfProperty +
+          "\n" +
+          "Votre situation: " +
+          newProject.userSituation +
+          "\n" +
+          "Localisation du bien: " +
+          newProject.locationOfProperty +
+          "\n" +
+          "Montant estimé: " +
+          newProject.amount.estimated +
+          "\n" +
+          "Montant des travaux: " +
+          newProject.amount.works +
+          "\n" +
+          "Frais de notaire: " +
+          newProject.amount.notarial +
+          "\n" +
+          "Total: " +
+          newProject.amount.total +
+          "\n" +
+          "Email: " +
+          newProject.email +
+          "\n" +
           "\n" +
           "À bientôt" +
           "\n" +
